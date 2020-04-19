@@ -1,20 +1,18 @@
-const express = require('express')
-const server = express()
-const http = require('http').Server(server)
+const express = require('express')()
+const http = require('http').Server(express)
 const io = require('socket.io')(http)
-const path = require('path')
-const players = []
-
-server.use('/assets', express.static(path.resolve('client/assets')))
-
-server.get('/', (req, res) => {
-  res.sendFile(path.resolve('client/index.html'))
-})
+let players = 0
 
 http.listen(3000, () => {
   console.log('listening 3000')
 })
 
-io.on('connection', socket => {
+io.on('connect', socket => {
+  players++
+  socket.emit('players', players)
+})
+
+io.on('disconnect', (reason) => {
+  players = players - 1
   socket.emit('players', players)
 })

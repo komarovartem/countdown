@@ -3,9 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "serve": "nodemon ./server/server.js",
-    "build-sass": "node-sass --output-style expanded --source-map true client/resources/sass/style.sass client/assets/css/style.css",
-    "watch": "npm run build-sass --watch && webpack --watch"
+    "start": "nodemon server.js"
   },
   "repository": {
     "type": "git",
@@ -20,13 +18,8 @@
   "homepage": "https://github.com/komarovartem/countdown#readme",
   "dependencies": {
     "express": "^4.17.1",
-    "socket.io": "^2.3.0",
-    "vue": "^2.6.11"
-  },
-  "devDependencies": {
     "nodemon": "^2.0.3",
-    "webpack": "^4.42.1",
-    "node-sass": "^4.13.1",
-    "webpack-cli": "^3.3.11"
+    "socket.io": "^2.3.0",
+    "uws": "^100.0.1"
   }
 }
