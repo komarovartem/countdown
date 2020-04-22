@@ -1,51 +1,47 @@
 <template>
-  <div class="game">
-    <h1>{{ players }}</h1>
-  </div>
+    <div class="game">
+        <h1>{{ players }}</h1>
+        <Letters :letters="letters" :status="status" />
+        <Countdown :status="status" />
+    </div>
 </template>
 
 <script>
 import io from 'socket.io-client'
+import Letters from "./Letters";
+import Countdown from "./Countdown";
 
 export default {
   name: 'Game',
+  components: {Letters, Countdown},
   data() {
     return {
+      status: false,
       socket: {},
+      letters: [],
       players: 0,
       playersOnline: 0,
     }
   },
   created() {
-    this.socket = io('http://localhost:3000')
+    this.socket = io('http://192.168.1.103:3000')
   },
   mounted() {
     this.socket.on('players', data => {
       this.players = data
     })
-  },
-  watch: {
-    playersOnline: function () {
 
-    }
+    this.socket.on('updateLetters', data => {
+      this.letters = data
+    })
+
+    this.socket.on('updateGameStatus', status => {
+      this.status = status
+    })
   }
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h3 {
-  margin: 40px 0 0;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
-}
+
 </style>
