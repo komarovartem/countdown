@@ -1,9 +1,19 @@
 <template>
-    <div class="letters">
-        <div class="letter" v-for="(letter, index) in letters" :key="index">
-            {{ letter }}
+    <div class="letters-game">
+        <div class="letters" v-if="letters.length">
+            <div class="letter" v-for="(letter, index) in letters" :key="index">
+                {{ letter }}
+            </div>
         </div>
-        <input type="text" v-bind="word" :disabled="!status" :value="status">
+        <input class="word-input" v-if="letters.length" type="text" v-bind="word" :disabled="!status" placeholder="Write the longest possible word here">
+
+        <div class="no-letters" v-else>
+            Wait a couple seconds until previous game will be finished
+        </div>
+
+        <div>
+            {{ words }} <br>
+        </div>
     </div>
 </template>
 
@@ -12,29 +22,17 @@ export default {
   name: 'Letters',
   props: {
     letters: Array,
+    words: Array,
     status: Boolean
   },
   data() {
     return {
-      word: ''
+      word: '',
+      gameWord: '',
+      gameResult: ''
     }
-  }
+  },
+  watch: {
+  },
 }
 </script>
-
-<style scoped>
-    .letters {
-        display: flex;
-        justify-content: center;
-    }
-
-    .letter {
-        flex: 0 0 40px;
-        width: 40px;
-        height: 40px;
-        text-transform: uppercase;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-</style>

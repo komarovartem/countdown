@@ -1,8 +1,10 @@
 import {io} from './connection.mjs'
+import {solve_letters} from './solver.mjs'
 
 const vowels = 'AEIOUY'
 const consonants = 'BCDFGHJKLMNPQRSTVWXZ'
 const letters = []
+let words = []
 let status = false
 
 io.on('connection', socket => {
@@ -22,6 +24,7 @@ setInterval( () => {
     const numberOfConsonants = 9 - numberOfVowels
   
     letters.length = 0
+    words.length = 0
   
     for ( let i = 0; i < numberOfVowels; i++ ) {
       letters.push(vowels.charAt(Math.floor(Math.random() * vowels.length)))
@@ -34,8 +37,10 @@ setInterval( () => {
     letters.sort(function() {
       return .5 - Math.random();
     })
+  
+    words = solve_letters(letters.join('').toLowerCase());
     
-    io.emit('updateLetters', letters)
+    io.emit('updateLetters', letters, words)
   }
   
   io.emit('updateGameStatus', status)
