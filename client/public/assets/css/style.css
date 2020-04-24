@@ -39,6 +39,7 @@ input {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    position: relative;
 }
 
 .header {
@@ -86,4 +87,13 @@ input {
     font-weight: bold;
     background: #37618c;
     box-shadow: 0 0 0 1px;
+}
+
+.results {
+    position: absolute;
+    left: 0;
+    top: 100px;
+    width: 200px;
+    font-size: 11px;
+    opacity: .5;
 }

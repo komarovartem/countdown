@@ -33,13 +33,13 @@ function _recurse_solve_letters(letters, node, used_letter, cb, answer) {
 
 export function solve_letters(letters) {
     var words = [];
-    _recurse_solve_letters(letters, dictionary, {}, function(word, c) { words.push([word, c]) }, '');
+    _recurse_solve_letters(letters, dictionary, {}, function(word, c) { words.push(word) }, '');
     
     words.sort(function(a, b) {
-      if (b[0].length !== a[0].length)
-        return b[0].length - a[0].length;
+      if (b.length !== a.length)
+        return b.length - a.length;
       else
-        return b[1] - a[1];
+        return b - a;
     });
     
     return words;

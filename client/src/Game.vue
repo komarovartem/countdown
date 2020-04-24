@@ -3,13 +3,14 @@
     <div class="header">
       <div>Your Score: 10</div>
       <PlayersCount :players="players" />
+      <Results :results="results" :all-results="allResults" />
     </div>
     <div class="body">
       <Timer v-if="letters.length" :status="status" />
-      <Letters :letters="letters" :status="status" :words="words" />
+      <Letters :letters="letters" :status="status" :words="words" :results="results" :socket="socket" />
     </div>
     <div class="footer">
-      Statistic: 1 players has 5 letters word - homes, 23 players has word
+      footer
     </div>
   </div>
 </template>
@@ -19,18 +20,28 @@ import io from 'socket.io-client'
 import Letters from "./components/Letters";
 import Timer from "./components/Timer";
 import PlayersCount from "./components/PlayersCount";
+import Results from "./components/Results";
 
 export default {
   name: 'Game',
-  components: {Letters, Timer, PlayersCount},
+  components: {Letters, Timer, PlayersCount, Results},
   data() {
     return {
       status: false,
+      results: [],
+      allResults: [],
       socket: {},
       letters: [],
       words: [],
       players: 0,
       playersOnline: 0,
+    }
+  },
+  watch: {
+    status(val) {
+      if (val) {
+        this.results = this.allResults = []
+      }
     }
   },
   created() {
@@ -48,6 +59,11 @@ export default {
 
     this.socket.on('updateGameStatus', status => {
       this.status = status
+    })
+
+    this.socket.on('roundResults', (validatedWords, allWords) => {
+      this.results = validatedWords
+      this.allResults = allWords
     })
   }
 }

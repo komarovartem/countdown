@@ -5,14 +5,16 @@
                 {{ letter }}
             </div>
         </div>
-        <input class="word-input" v-if="letters.length" type="text" v-bind="word" :disabled="!status" placeholder="Write the longest possible word here">
+        <input class="word-input" v-if="letters.length" type="text" v-model="word" :disabled="!status" placeholder="Write the longest possible word here">
 
         <div class="no-letters" v-else>
             Wait a couple seconds until previous game will be finished
         </div>
-
-        <div>
-            {{ words }} <br>
+        <div class="result">
+            {{ gameResult }}
+        </div>
+        <div class="fyi">
+            {{ fyi }}
         </div>
     </div>
 </template>
@@ -23,16 +25,47 @@ export default {
   props: {
     letters: Array,
     words: Array,
-    status: Boolean
+    status: Boolean,
+    socket: Object,
+    results: Array
   },
   data() {
     return {
       word: '',
       gameWord: '',
-      gameResult: ''
+      gameResult: '',
+      fyi: ''
     }
   },
   watch: {
-  },
+    status(val) {
+      if (val) {
+        this.word = this.gameResult = this.fyi = ''
+      } else {
+        this.word && this.socket.emit('pushWord', this.word.toLowerCase())
+      }
+    },
+    results() {
+      this.fyi = `One of the longest possible words from this round is -  ${this.words[0]}`
+
+      if (this.status) return
+
+
+      if (!this.word) {
+        this.gameResult = `You did not write any word so you are skipping this round`
+        return
+      }
+
+      if (this.words.indexOf(this.word.toLowerCase()) === -1) {
+        this.gameResult = `Sorry, the word "${this.word}" is not in a dictionary or cannot be made from these letters`
+      } else {
+        if (this.results[0].length > this.word.length) {
+          this.gameResult = `Sorry, you have ${this.word.length} letters word, but other player has got ${this.results[0].length} letters word, so no points you`
+        } else {
+          this.gameResult = `Congrats, you have earned ${this.word.length} points`
+        }
+      }
+    }
+  }
 }
 </script>

@@ -13,7 +13,7 @@ export default {
   data() {
     return {
       timer: 0,
-      time: 10,
+      time: 5,
       interval: null
     }
   },
