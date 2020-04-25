@@ -23,14 +23,14 @@ body {
 
 input {
     height: 50px;
-    width: 300px;
+    width: 350px;
     border: none;
     padding: 10px 20px;
     margin: 30px 0;
     box-shadow: none;
     text-transform: uppercase;
     text-align: center;
-    font-size: 16px;
+    font-size: 13px;
 }
 
 .game {
@@ -46,10 +46,6 @@ input {
     padding-top: 40px;
     display: flex;
     justify-content: space-between;
-}
-
-.body {
-
 }
 
 .footer {
@@ -97,3 +93,16 @@ input {
     font-size: 11px;
     opacity: .5;
 }
+
+.result {
+    margin: 30px 0;
+    height: 50px;
+}
+
+.timer {
+    font-width: bold;
+    font-size: 30px;
+    text-align: center;
+}
+
+

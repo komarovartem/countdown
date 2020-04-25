@@ -1,9 +1,9 @@
 <template>
   <div class="game">
     <div class="header">
-      <div>Your Score: 10</div>
+      <div>Your Score: {{ playerScore }}</div>
       <PlayersCount :players="players" />
-      <Results :results="results" :all-results="allResults" />
+      <Results v-if="results.length" :results="results" :all-results="allResults" />
     </div>
     <div class="body">
       <Timer v-if="letters.length" :status="status" />
@@ -35,17 +35,19 @@ export default {
       words: [],
       players: 0,
       playersOnline: 0,
+      playerScore: 0
     }
   },
   watch: {
     status(val) {
       if (val) {
-        this.results = this.allResults = []
+        this.results = []
+        this.allResults = []
       }
     }
   },
   created() {
-    this.socket = io('http://192.168.1.103:3000')
+    this.socket = io()
   },
   mounted() {
     this.socket.on('players', data => {
@@ -55,6 +57,7 @@ export default {
     this.socket.on('updateLetters', (letters, words) => {
       this.letters = letters
       this.words = words
+      console.log(letters, words)
     })
 
     this.socket.on('updateGameStatus', status => {
@@ -65,6 +68,11 @@ export default {
       this.results = validatedWords
       this.allResults = allWords
     })
+  },
+  methods: {
+    addScorePoints(points) {
+      this.playerScore += points
+    }
   }
 }
 </script>

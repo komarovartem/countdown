@@ -1,6 +1,6 @@
 <template>
     <div class="timer">
-        {{ timer }}
+        {{ getTimerTest }} {{ timer }}
     </div>
 </template>
 
@@ -13,35 +13,32 @@ export default {
   data() {
     return {
       timer: 0,
-      time: 5,
+      time: 30,
       interval: null
     }
   },
-  created() {
-  if (this.status === false)
-    this.timer = 0
-  },
   watch: {
     status(val) {
+      clearInterval(this.interval)
       if (val) {
-          this.timer = this.time
-
-          this.interval = setInterval(() => {
-            this.timer >= 0 && this.timer--
-          }, 1000)
+        this.timer = 30
       } else {
-        this.timer = 'Time is out. Checking a winner'
-        clearInterval(this.interval)
+        this.timer = 20
+      }
+
+      this.interval = setInterval(() => {
+        this.timer >= 0 && this.timer--
+      }, 1000)
+    }
+  },
+  computed: {
+    getTimerTest() {
+      if (!this.status) {
+        return 'Time is out. Next round stars in: '
+      } else {
+        return ''
       }
     }
   }
 }
 </script>
-
-<style scoped>
-    .timer {
-        font-width: bold;
-        font-size: 30px;
-        text-align: center;
-    }
-</style>
