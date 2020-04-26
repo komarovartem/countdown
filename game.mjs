@@ -9,10 +9,13 @@ let validatedPlayerWords = []
 let allPlayerWords = []
 let status = false
 let amountOfBots = 0
+let roundTime = 51
+let currentRoundSecond = 51
 
 io.on('connection', socket => {
   io.emit('players', io.engine.clientsCount + amountOfBots)
   io.emit('updateGameStatus', status)
+  io.emit('currentRoundSecond', currentRoundSecond)
   
   socket.on('disconnect', reason => {
     io.emit('players', io.engine.clientsCount + amountOfBots)
@@ -64,6 +67,13 @@ const generateNewLetters = () => {
   })
   
   availableWords = solve_letters(letters.join(''));
+  
+  // rerun random letters to make sure we have a good letters for big variety of words
+  if (Array.isArray(availableWords) && availableWords[0] && availableWords[0].length < 8) {
+    letters = []
+    availableWords = []
+    generateNewLetters()
+  }
 }
 
 const gameOn = () => {
@@ -76,12 +86,12 @@ const gameOn = () => {
   
   setTimeout(() => {
     io.emit('updateGameStatus', true)
-  }, 5000)
+  }, 6000)
   
   // pause game after 30s
   setTimeout(() => {
     pauseGame()
-  }, 35000)
+  }, 36000)
 }
 
 const pauseGame = () => {
@@ -93,7 +103,7 @@ const pauseGame = () => {
       return b.length - a.length;
     })
     io.emit('roundResults', validatedPlayerWords, allPlayerWords)
-  }, 2000)
+  }, 3000)
   
   // start game after 15s after pause
   setTimeout(() => {
@@ -101,6 +111,13 @@ const pauseGame = () => {
   }, 15000)
 }
 
-gameOn()
+setInterval(() => {
+  if (currentRoundSecond > 0) {
+    currentRoundSecond--
+  } else {
+    currentRoundSecond = roundTime
+  }
+}, 1000)
 
+gameOn()
 

@@ -1,19 +1,13 @@
 <template>
     <div class="letters-game">
         <div class="letters" v-if="letters.length">
-            <div class="letter" v-for="(letter, index) in letters" :key="index">
+            <div class="letter" v-for="(letter, index) in roundLetters" :key="index">
                 {{ letter }}
             </div>
         </div>
-        <input class="word-input" v-if="status && letters.length" type="text" v-model="word" placeholder="Write the longest possible word here">
-
-        <div class="no-letters" v-if="!letters.length">
-            This is PVP game so please wait a couple seconds until previous round will be finished
-        </div>
-
-        <div class="result">
+        <input v-if="status" ref="input" class="word-input" type="text" v-model="word" placeholder="Write the longest possible word here">
+        <div class="result" v-if="!status && !newPlayer">
             {{ gameResult }}
-
             <div class="fyi">
                 {{ fyi }}
             </div>
@@ -29,22 +23,50 @@ export default {
     words: Array,
     status: Boolean,
     socket: Object,
-    results: Array
+    results: Array,
+    newPlayer: Boolean
   },
   data() {
     return {
       word: '',
       gameWord: '',
       gameResult: '',
-      fyi: ''
+      fyi: '',
+      roundLetters: []
     }
   },
   watch: {
+    letters(letters) {
+      this.roundLetters = ['','','','','','','','','']
+      const alphabet = String('abcdefghijklmnopqrstuvwxyz').split('')
+      let index = 0
+
+      const interval = setInterval(() => {
+        for (let i = 0; i <= 8; i++) {
+          if (index <= i) {
+            this.roundLetters.splice(i, 1, alphabet[Math.floor(Math.random() * 26)])
+          }
+        }
+      }, 20)
+
+      const lettersInterval = setInterval(() => {
+        this.roundLetters.splice(index, 1, letters[index])
+        index++
+      }, 550)
+
+      setTimeout(() => {
+        clearInterval(interval)
+        clearInterval(lettersInterval)
+        this.roundLetters = letters
+      }, 5000)
+    },
     status(val) {
       if (val) {
         this.word = this.gameResult = this.fyi = ''
+        this.$refs.input && this.$nextTick(() => this.$refs.input.focus())
       } else {
         this.socket.emit('pushWord', this.word.toLowerCase())
+        this.fyi = 'Please wait. Checking results...'
       }
     },
     results() {

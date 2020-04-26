@@ -71,6 +71,10 @@ input {
     margin: 40px 0 10px;
 }
 
+.no-letters {
+    text-align: center;
+}
+
 .letter {
     flex: 0 0 60px;
     width: 60px;
@@ -85,6 +89,8 @@ input {
     box-shadow: 0 0 0 1px;
 }
 
+
+
 .results {
     position: absolute;
     left: 0;
@@ -92,6 +98,10 @@ input {
     width: 200px;
     font-size: 11px;
     opacity: .5;
+}
+
+.results-header {
+    margin-bottom: 5px;
 }
 
 .result {

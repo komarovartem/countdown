@@ -1,18 +1,22 @@
 <template>
-  <div class="game">
-    <div class="header">
-      <div>Your Score: {{ playerScore }}</div>
-      <PlayersCount :players="players" />
-      <Results v-if="results.length" :results="results" :all-results="allResults" />
+    <div class="game">
+        <div class="header">
+            <div>Your Score: {{ playerScore }}</div>
+            <PlayersCount :players="players" />
+            <Results v-if="results.length" :results="results" :all-results="allResults" />
+        </div>
+        <div class="body">
+            <Timer v-if="letters.length" :status="status" />
+            <Letters :letters="letters" :status="status" :words="words" :results="results" :socket="socket" :new-player="newPlayer" />
+            <div class="no-letters" v-if="newPlayer">
+                This is PVP game so please wait {{ countdownNextRoundSecond }} seconds until previous round will be
+                finished
+            </div>
+        </div>
+        <div class="footer">
+            footer
+        </div>
     </div>
-    <div class="body">
-      <Timer v-if="letters.length" :status="status" />
-      <Letters :letters="letters" :status="status" :words="words" :results="results" :socket="socket" />
-    </div>
-    <div class="footer">
-      footer
-    </div>
-  </div>
 </template>
 
 <script>
@@ -28,14 +32,17 @@ export default {
   data() {
     return {
       status: false,
+      newPlayer: true,
       results: [],
       allResults: [],
       socket: {},
       letters: [],
       words: [],
       players: 0,
+      currentRoundSecond: 0,
+      countdownNextRoundSecond: 0,
       playersOnline: 0,
-      playerScore: 0
+      playerScore: 0,
     }
   },
   watch: {
@@ -43,7 +50,17 @@ export default {
       if (val) {
         this.results = []
         this.allResults = []
+        this.newPlayer = false
       }
+    },
+    currentRoundSecond() {
+      const interval = setInterval(() => {
+        if (this.countdownNextRoundSecond < 1) {
+          clearInterval(interval)
+        } else {
+          this.countdownNextRoundSecond--
+        }
+      }, 1000)
     }
   },
   created() {
@@ -52,6 +69,11 @@ export default {
   mounted() {
     this.socket.on('players', data => {
       this.players = data
+    })
+
+    this.socket.on('currentRoundSecond', data => {
+      this.currentRoundSecond = data
+      this.countdownNextRoundSecond = data
     })
 
     this.socket.on('updateLetters', (letters, words) => {

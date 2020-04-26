@@ -12,7 +12,7 @@ export default {
   },
   data() {
     return {
-      timer: 0,
+      timer: '',
       time: 30,
       interval: null
     }
@@ -20,6 +20,7 @@ export default {
   watch: {
     status(val) {
       clearInterval(this.interval)
+
       if (val) {
         this.timer = 30
       } else {
@@ -33,7 +34,7 @@ export default {
   },
   computed: {
     getTimerTest() {
-      if (!this.status) {
+      if (!this.status && this.interval) {
         return 'Time is out. Next round stars in: '
       } else {
         return ''
