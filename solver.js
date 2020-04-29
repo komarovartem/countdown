@@ -5,7 +5,7 @@
  * James Stanley 2014
  */
 
-import { dictionary } from './dictionary.mjs'
+const dictionary = require('./dictionary')
 
 function _recurse_solve_letters(letters, node, used_letter, cb, answer) {
     if (node[0])
@@ -31,7 +31,7 @@ function _recurse_solve_letters(letters, node, used_letter, cb, answer) {
     }
 }
 
-export function solve_letters(letters) {
+function solve_letters(letters) {
     var words = [];
     _recurse_solve_letters(letters, dictionary, {}, function(word, c) { words.push(word) }, '');
     
@@ -286,3 +286,5 @@ function solve_numbers(numbers, target, trickshot) {
 
     return stringify_result(serialise_result(tidyup_result(_solve_numbers(numbers, target, trickshot))), target);
 }
+
+module.exports = solve_letters

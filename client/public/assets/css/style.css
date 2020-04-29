@@ -26,11 +26,18 @@ input {
     width: 350px;
     border: none;
     padding: 10px 20px;
-    margin: 30px 0;
     box-shadow: none;
     text-transform: uppercase;
     text-align: center;
     font-size: 13px;
+}
+
+b {
+    font-weight: 900;
+}
+
+.score {
+    font-size: 14px;
 }
 
 .game {
@@ -43,9 +50,22 @@ input {
 }
 
 .header {
-    padding-top: 40px;
+    padding-top: 50px;
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    line-height: 1;
+}
+
+.header > * {
+    flex: 1
+}
+
+.logo {
+    font-weight: bold;
+    font-size: 20px;
+    letter-spacing: 7px;
+    text-align: center;
 }
 
 .footer {
@@ -68,35 +88,38 @@ input {
 .letters {
     display: flex;
     justify-content: center;
-    margin: 40px 0 10px;
+    margin: 40px 0 30px;
 }
 
 .no-letters {
     text-align: center;
 }
 
+.body {
+    margin-top: -50px;
+}
+
+
 .letter {
-    flex: 0 0 60px;
-    width: 60px;
-    height: 55px;
+    flex: 0 0 65px;
+    height: 60px;
     text-transform: uppercase;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 40px;
-    font-weight: bold;
+    font-size: 44px;
+    font-weight: 900;
     background: #37618c;
     box-shadow: 0 0 0 1px;
 }
 
-
-
 .results {
     position: absolute;
     left: 0;
-    top: 100px;
+    top: 110px;
     width: 200px;
     font-size: 11px;
+    line-height: 1.2;
     opacity: .5;
 }
 
@@ -105,12 +128,11 @@ input {
 }
 
 .result {
-    margin: 30px 0;
     height: 50px;
 }
 
 .timer {
-    font-width: bold;
+    font-weight: bold;
     font-size: 30px;
     text-align: center;
 }

@@ -1,16 +1,14 @@
 <template>
-    <div class="letters-game">
-        <div class="letters" v-if="letters.length">
+    <div class="letters-game" v-if="letters.length">
+        <div class="letters">
             <div class="letter" v-for="(letter, index) in roundLetters" :key="index">
                 {{ letter }}
             </div>
         </div>
         <input v-if="status" ref="input" class="word-input" type="text" v-model="word" placeholder="Write the longest possible word here">
-        <div class="result" v-if="!status && !newPlayer">
+        <div class="result" v-if="!status">
             {{ gameResult }}
-            <div class="fyi">
-                {{ fyi }}
-            </div>
+            <div class="fyi" v-html="fyi" />
         </div>
     </div>
 </template>
@@ -52,7 +50,7 @@ export default {
       const lettersInterval = setInterval(() => {
         this.roundLetters.splice(index, 1, letters[index])
         index++
-      }, 550)
+      }, 500)
 
       setTimeout(() => {
         clearInterval(interval)
@@ -66,7 +64,9 @@ export default {
         this.$refs.input && this.$nextTick(() => this.$refs.input.focus())
       } else {
         this.socket.emit('pushWord', this.word.toLowerCase())
-        this.fyi = 'Please wait. Checking results...'
+        if (!this.newPlayer) {
+            this.fyi = 'Please wait. Checking results...'
+        }
       }
     },
     results() {
@@ -77,7 +77,7 @@ export default {
       if (this.status) return;
 
       if (!this.status) {
-        this.fyi = `One of the longest possible words from this round was -  ${this.words[0]}`
+        this.fyi = `One of the longest possible words from this round was -  <b>${this.words[0]}</b>`
       }
 
       if (!this.word.length && this.letters.length) {
@@ -89,7 +89,7 @@ export default {
         this.gameResult = `Sorry, the word "${this.word}" is not in a dictionary or cannot be made from these letters`
       } else {
         if (this.results[0].length > this.word.length) {
-          this.gameResult = `Sorry, you have ${this.word.length} letters word, but other player had got ${this.results[0].length} letters word, so no points you`
+          this.gameResult = `Sorry, you have ${this.word.length} letters word, but other player has ${this.results[0].length} letters word, so no points for you`
         } else {
           this.gameResult = `Congrats, you have earned ${this.word.length} points`
           this.$parent.addScorePoints(this.word.length)

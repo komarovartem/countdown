@@ -1,15 +1,16 @@
 <template>
     <div class="game">
         <div class="header">
-            <div>Your Score: {{ playerScore }}</div>
+            <div class="score">Your Score: <b>{{ playerScore }}</b></div>
+            <div class="logo">COUNTDOWN</div>
             <PlayersCount :players="players" />
             <Results v-if="results.length" :results="results" :all-results="allResults" />
         </div>
         <div class="body">
             <Timer v-if="letters.length" :status="status" />
             <Letters :letters="letters" :status="status" :words="words" :results="results" :socket="socket" :new-player="newPlayer" />
-            <div class="no-letters" v-if="newPlayer">
-                This is PVP game so please wait {{ countdownNextRoundSecond }} seconds until previous round will be
+            <div class="no-letters" v-if="!letters.length">
+                This is PVP game, please wait {{ countdownNextRoundSecond }} seconds until previous round will be
                 finished
             </div>
         </div>
@@ -50,7 +51,10 @@ export default {
       if (val) {
         this.results = []
         this.allResults = []
-        this.newPlayer = false
+
+        if (this.letters.length) {
+            this.newPlayer = false
+        }
       }
     },
     currentRoundSecond() {
@@ -72,6 +76,7 @@ export default {
     })
 
     this.socket.on('currentRoundSecond', data => {
+      console.log(data)
       this.currentRoundSecond = data
       this.countdownNextRoundSecond = data
     })

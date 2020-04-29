@@ -1,5 +1,6 @@
-import {io} from './connection.mjs'
-import {solve_letters} from './solver.mjs'
+const connection =  require('./connection')
+const io = connection.io
+const solve_letters =  require('./solver')
 
 const vowels = 'aeiouy'
 const consonants = 'bcdfghjklmnpqrstvwxz'
@@ -9,13 +10,19 @@ let validatedPlayerWords = []
 let allPlayerWords = []
 let status = false
 let amountOfBots = 0
-let roundTime = 51
-let currentRoundSecond = 51
+let roundTime = 50
+let currentRoundSecond = 50
 
 io.on('connection', socket => {
   io.emit('players', io.engine.clientsCount + amountOfBots)
-  io.emit('updateGameStatus', status)
-  io.emit('currentRoundSecond', currentRoundSecond)
+  socket.emit('updateGameStatus', status)
+  
+  // if someone join a game after letters push but before game start
+  if (currentRoundSecond < 6) {
+    socket.emit('currentRoundSecond', roundTime - currentRoundSecond)
+  } else {
+    socket.emit('currentRoundSecond', currentRoundSecond)
+  }
   
   socket.on('disconnect', reason => {
     io.emit('players', io.engine.clientsCount + amountOfBots)
@@ -81,21 +88,25 @@ const gameOn = () => {
   generateNewLetters()
   runBots()
   
+  currentRoundSecond = 50
+  
   // send letters before starting the game to make some time for animation
   io.emit('updateLetters', letters, availableWords)
   
   setTimeout(() => {
     io.emit('updateGameStatus', true)
-  }, 6000)
+  }, 5000)
   
   // pause game after 30s
   setTimeout(() => {
     pauseGame()
-  }, 36000)
+  }, 35000)
 }
 
 const pauseGame = () => {
   io.emit('updateGameStatus', false)
+  
+  currentRoundSecond = 15
   
   // send round results
   setTimeout(function () {
@@ -119,5 +130,5 @@ setInterval(() => {
   }
 }, 1000)
 
-gameOn()
+module.exports = gameOn
 
