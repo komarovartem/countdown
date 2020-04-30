@@ -23,10 +23,11 @@
                 <a href="https://github.com/komarovartem/countdown" target="_blank"><i></i>Contribute</a>
             </div>
             <div class="copyright">
-                text
+
             </div>
             <div class="share">
-                share
+                share:
+                <a href=""></a>
             </div>
         </div>
     </div>
