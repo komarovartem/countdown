@@ -22,12 +22,10 @@
             <div class="contribute">
                 <a href="https://github.com/komarovartem/countdown" target="_blank"><i></i>Contribute</a>
             </div>
-            <div class="copyright">
-
-            </div>
             <div class="share">
-                share:
-                <a href=""></a>
+                <span>share:</span>
+                <a href="https://www.facebook.com/sharer.php?u=https://countdown-game.online/" target="_blank">facebook</a>
+                <a href="https://twitter.com/intent/tweet?url=https://countdown-game.online/" target="_blank">twitter</a>
             </div>
         </div>
     </div>
@@ -97,7 +95,6 @@ export default {
     this.socket.on('updateLetters', (letters, words) => {
       this.letters = letters
       this.words = words
-      window.cheat = words
     })
 
     this.socket.on('updateGameStatus', status => {
