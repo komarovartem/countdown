@@ -4,10 +4,14 @@
             <div class="score">Your Score: <b>{{ playerScore }}</b></div>
             <div class="logo">COUNTDOWN</div>
             <PlayersCount :players="players" />
-            <Results v-if="results.length" :results="results" :all-results="allResults" />
+            <transition name="slide-fade">
+                <Results v-if="results.length" :results="results" :all-results="allResults" />
+            </transition>
         </div>
         <div class="body">
-            <Timer v-if="letters.length" :status="status" />
+            <transition name="fade">
+                <Timer v-if="letters.length" :status="status" />
+            </transition>
             <Letters :letters="letters" :status="status" :words="words" :results="results" :socket="socket" :new-player="newPlayer" />
             <div class="no-letters" v-if="!letters.length">
                 This is PVP game, please wait {{ countdownNextRoundSecond }} seconds until previous round will be
@@ -15,7 +19,15 @@
             </div>
         </div>
         <div class="footer">
-            footer
+            <div class="contribute">
+                <a href="https://github.com/komarovartem/countdown" target="_blank"><i></i>Contribute</a>
+            </div>
+            <div class="copyright">
+                text
+            </div>
+            <div class="share">
+                share
+            </div>
         </div>
     </div>
 </template>
@@ -53,7 +65,7 @@ export default {
         this.allResults = []
 
         if (this.letters.length) {
-            this.newPlayer = false
+          this.newPlayer = false
         }
       }
     },
@@ -69,6 +81,7 @@ export default {
   },
   created() {
     this.socket = io()
+    this.playerScore = this.$cookie.get('score') ? Number(this.$cookie.get('score')) : 0
   },
   mounted() {
     this.socket.on('players', data => {
@@ -76,7 +89,6 @@ export default {
     })
 
     this.socket.on('currentRoundSecond', data => {
-      console.log(data)
       this.currentRoundSecond = data
       this.countdownNextRoundSecond = data
     })
@@ -84,7 +96,7 @@ export default {
     this.socket.on('updateLetters', (letters, words) => {
       this.letters = letters
       this.words = words
-      console.log(letters, words)
+      window.cheat = words
     })
 
     this.socket.on('updateGameStatus', status => {
@@ -99,6 +111,7 @@ export default {
   methods: {
     addScorePoints(points) {
       this.playerScore += points
+      this.$cookie.set('score', this.playerScore, 1)
     }
   }
 }

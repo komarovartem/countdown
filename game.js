@@ -75,7 +75,7 @@ const generateNewLetters = () => {
   
   availableWords = solve_letters(letters.join(''));
   
-  // rerun random letters to make sure we have a good letters for big variety of words
+  // rerun random letters to make sure we have big variety of words
   if (Array.isArray(availableWords) && availableWords[0] && availableWords[0].length < 8) {
     letters = []
     availableWords = []
@@ -131,4 +131,3 @@ setInterval(() => {
 }, 1000)
 
 module.exports = gameOn
-

@@ -10,8 +10,9 @@
   },
   "dependencies": {
     "core-js": "^3.6.4",
+    "uws": "^100.0.1",
     "vue": "^2.6.11",
-    "uws": "^100.0.1"
+    "vue-cookie": "^1.1.4"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^4.3.0",
