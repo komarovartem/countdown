@@ -17,19 +17,20 @@ body {
     font-family: Avenir, Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    font-size: 13px;
     height: 100%;
     margin: 0;
 }
 
 input {
-    height: 50px;
-    width: 350px;
+    height: 40px;
+    width: 272px;
+    font-size: 10px;
     border: none;
     padding: 10px 20px;
     box-shadow: none;
     text-transform: uppercase;
     text-align: center;
-    font-size: 13px;
 }
 
 b {
@@ -41,11 +42,11 @@ a {
 }
 
 .score {
-    font-size: 14px;
+    font-size: 8px;
 }
 
 .game {
-    margin: 0 50px;
+    margin: 0 20px;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -54,7 +55,7 @@ a {
 }
 
 .header {
-    padding-top: 50px;
+    padding-top: 25px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -66,9 +67,9 @@ a {
 }
 
 .logo {
+    font-size: 13px;
+    letter-spacing: 3px;
     font-weight: bold;
-    font-size: 20px;
-    letter-spacing: 7px;
     text-align: center;
 }
 
@@ -76,7 +77,7 @@ a {
     font-size: 11px;
     padding-bottom: 20px;
     display: flex;
-    align-items: baseline;
+    align-items: center;
 }
 
 .footer a {
@@ -88,7 +89,7 @@ a {
 }
 
 .players-count {
-    font-size: 14px;
+    font-size: 8px;
     font-weight: bold;
     text-align: right;
 }
@@ -98,9 +99,9 @@ a {
 }
 
 .letters {
+    margin: 20px 0 25px;
     display: flex;
     justify-content: center;
-    margin: 40px 0 30px;
 }
 
 .no-letters {
@@ -112,13 +113,13 @@ a {
 }
 
 .letter {
-    flex: 0 0 65px;
-    height: 60px;
+    flex: 0 0 30px;
+    height: 35px;
+    font-size: 20px;
     text-transform: uppercase;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 44px;
     font-weight: 900;
     background: #37618c;
     box-shadow: 0 0 0 1px;
@@ -144,7 +145,7 @@ a {
 
 .timer {
     font-weight: bold;
-    font-size: 30px;
+    font-size: 20px;
     text-align: center;
 }
 
@@ -208,5 +209,57 @@ a {
     left: 0;
     right: 0;
     margin: auto;
+}
+
+@media (min-width: 760px) {
+    body {
+        font-size: 16px;
+    }
+
+    input {
+        height: 50px;
+        width: 350px;
+        font-size: 13px;
+    }
+
+    .results {
+        top: 110px;
+    }
+
+    .header {
+        padding-top: 50px;
+    }
+
+    .players-count {
+        font-size: 14px;
+    }
+
+    .timer {
+        font-size: 30px;
+    }
+
+    .game {
+        margin: 0 50px;
+    }
+
+    .letters {
+        margin: 40px 0 30px;
+    }
+
+    .letter {
+        flex: 0 0 65px;
+        height: 60px;
+        font-size: 44px;
+    }
+
+    .logo {
+        font-size: 20px;
+        letter-spacing: 7px;
+    }
+
+    .score,
+    .players-count {
+        font-size: 14px;
+    }
 }
 
