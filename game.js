@@ -76,7 +76,7 @@ const generateNewLetters = () => {
   availableWords = solve_letters(letters.join(''));
   
   // rerun random letters to make sure we have big variety of words
-  if (Array.isArray(availableWords) && availableWords[0] && availableWords[0].length < 8) {
+  if (!availableWords.length || Array.isArray(availableWords) && availableWords[0] && availableWords[0].length < 8) {
     letters = []
     availableWords = []
     generateNewLetters()
